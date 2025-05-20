@@ -15,7 +15,7 @@ export default function Navbar() {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-6">
-        <Link href="/collections" className="hover:text-yellow-400 transition">
+        {/* <Link href="/collections" className="hover:text-yellow-400 transition">
           Collections
         </Link>
         <Link href="/about" className="hover:text-yellow-400 transition">
@@ -23,10 +23,12 @@ export default function Navbar() {
         </Link>
         <Link href="/contact" className="hover:text-yellow-400 transition">
           Contact
-        </Link>
-        <Button className="bg-white text-black hover:bg-gray-100 font-semibold">
-          Shop Now
-        </Button>
+        </Link> */}
+       <Link href="/dashboard/product" className="hover:text-yellow-400 transition">
+       <Button className="mt-4 bg-white text-black hover:bg-gray-100">
+       Dashboard
+      </Button>
+      </Link>
       </nav>
 
       {/* Mobile nav */}
@@ -47,7 +49,7 @@ export default function Navbar() {
       <Link href="/" className="hover:text-yellow-400 transition">
         Home
       </Link>
-      <Link href="/collections" className="hover:text-yellow-400 transition">
+      {/* <Link href="/collections" className="hover:text-yellow-400 transition">
         Collections
       </Link>
       <Link href="/about" className="hover:text-yellow-400 transition">
@@ -55,10 +57,16 @@ export default function Navbar() {
       </Link>
       <Link href="/contact" className="hover:text-yellow-400 transition">
         Contact
-      </Link>
+      </Link> */}
       <Button className="mt-4 bg-white text-black hover:bg-gray-100">
         Shop Now
       </Button>
+      
+      <Link href="/dashboard/product" className="hover:text-yellow-400 transition">
+       <Button className="mt-4 bg-white text-black hover:bg-gray-100">
+       Dashboard
+      </Button>
+      </Link>
     </nav>
   </SheetContent>
 </Sheet>

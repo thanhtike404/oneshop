@@ -4,7 +4,11 @@ import { useQuery } from '@tanstack/react-query'
 import { Product } from '@/types/productType'
 
 import { FilterOptions } from '@/types/filterType'
-const fetchProducts = async (filters: FilterOptions = {}) => {
+const fetchProducts = async (filters: FilterOptions = {}) => {interface FilterOptions {
+  name?: string
+  categoryId?: string
+  subcategoryId?: string
+}
   const { name, categoryId, subcategoryId } = filters
   const queryParams = new URLSearchParams()
 

@@ -1,11 +1,9 @@
+import Dashboard from '../components/Dashboard';
 
-function page() {
-  
+export default function DashboardPage() {
   return (
-    <div className="">
-        dashboard page
+    <div className="container mx-auto px-4 py-8">
+        <Dashboard/>
     </div>
   )
 }
-
-export default page

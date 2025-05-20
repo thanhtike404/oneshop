@@ -8,27 +8,29 @@ export const GET = async (req: NextRequest) => {
     const categoryId = searchParams.get('categoryId');
     const subcategoryId = searchParams.get('subcategoryId');
     const name = searchParams.get('name');
-
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
+    
     // Build the where clause for filtering
     const whereClause: any = {};
-
+    
     if (categoryId) {
       whereClause.categoryId = categoryId;
     }
-
+    
     if (subcategoryId) {
       whereClause.subcategoryId = subcategoryId;
     }
-
+    
     if (name) {
       whereClause.name = {
         contains: name,
         mode: 'insensitive' // Case-insensitive search
       };
     }
-
+    
     const products = await prismaClient.product.findMany({
       where: whereClause, // Apply filters here
+      take: limit,
       include: {
         images: {
           select: {
@@ -65,16 +67,19 @@ export const GET = async (req: NextRequest) => {
         }
       },
     });
-
+    
     const formatted = products.map((product) => {
       const totalStock = product.stocks.reduce(
         (sum, stock) => sum + stock.quantity,
         0
       );
-
+      
       return {
         id: product.id,
         name: product.name,
+        slug: product.slug,
+        description: product.description,
+        basePrice: product.basePrice,
         images: product.images,
         totalStock,
         stockCount: product.stocks.length,
@@ -84,7 +89,7 @@ export const GET = async (req: NextRequest) => {
         subcategory: product.subcategory
       };
     });
-
+    
     return NextResponse.json(formatted);
   } catch (error) {
     console.error(error);
@@ -95,7 +100,7 @@ export const GET = async (req: NextRequest) => {
   }
 };
 
-// POST remains the same
+// POST endpoint for creating new products
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import FsLightbox from "fslightbox-react"
 import Image from "next/image"
-import type { Product } from "../dashboard/product/page" // adjust import as needed
+import { Product } from "@/types/productType"
 
 export default function ProductImageCell({ product }: { product: Product }) {
   const images = product.images?.map((img) => img.url) || []
