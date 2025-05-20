@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { getProducts } from "@/app/lib/getProducts";
-import { getCategories } from "@/app/lib/getCategories";
+import { getProducts } from "@/lib/getProducts";
+import { getCategories } from "@/lib/getCategories";
+import { CategoryType } from "@/types/categoryType";
 
 export default async function Home() {
   const products = await getProducts();
@@ -46,7 +47,7 @@ export default async function Home() {
             Shop by <span className="text-amber-400">Category</span>
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-            {categories.map((category) => (
+            {categories.map((category: CategoryType | any) => (
               <div key={category.id} className="group cursor-pointer">
                 <div className="relative h-48 md:h-64 rounded-lg overflow-hidden mb-3">
                   <Image
@@ -268,10 +269,3 @@ export default async function Home() {
     </div>
   );
 }
-
-// You'll need to create this function to fetch categories
-// Example implementation:
-// export async function getCategories() {
-//   // Fetch categories from your API or database
-//   return [...]; 
-// }
