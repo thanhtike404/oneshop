@@ -1,15 +1,17 @@
-// app/(dashboard)/layout.tsx
-
-import React from "react";
-
-export default function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+// app/dashboard/layout.tsx
+import Sidebar from '@/app/(dashboard)/components/Sidebar';
+import Navbar from '@/app/(dashboard)/components/Navbar';
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <main>{children}</main>
-    </>
+    <div className="flex h-screen">
+
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+      <Navbar />
+        <main className="p-4 overflow-auto">{children}</main>
+      </div>
+
+ 
+    </div>
   );
 }

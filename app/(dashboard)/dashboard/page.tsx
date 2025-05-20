@@ -1,7 +1,7 @@
 
 function page() {
   return (
-    <div className="text-white">
+    <div className="">
         dashboard page
     </div>
   )
