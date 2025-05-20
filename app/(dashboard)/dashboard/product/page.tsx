@@ -2,46 +2,16 @@
 
 import * as React from "react"
 import { DataTable } from "@/app/(dashboard)/components/data-table"
-import { columns } from "@/app/(dashboard)/components/column"
-import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
+import { columns } from "@/app/(dashboard)/dashboard/product/column"
 
-export type Product = {
-  id: string
-  name: string
-  images: {
-    url: string
-    altText: string
-    isPrimary: boolean
-  }[]
-  totalStock: number
-  stockCount: number
-  stocks: {
-    quantity: number
-    sku: string
-    barcode: string
-    location: string
-    variant: {
-      name: string
-    }
-  }[]
-}
+import { useProducts } from "@/app/hooks/dashboard/useProducts"
 
 
-const fetchProducts=async()=>{
-  const products=await axios.get('/api/v1/dashboard/products')
-  return products.data
-}
 
 
 
 export default function Page() {
-  const {data:products}=useQuery({
-    queryKey:['products'],
-    queryFn:fetchProducts
-  })
-
-  console.log(products)
-return <DataTable columns={columns} data={products ?? []} />
+  const {data:products,isLoading}=useProducts()
+return <DataTable columns={columns} data={products ?? []} isLoading={isLoading} />
 
 }

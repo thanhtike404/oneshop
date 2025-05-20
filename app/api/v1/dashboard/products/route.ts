@@ -53,3 +53,19 @@ export const GET = async (req: NextRequest) => {
     );
   }
 };
+
+export const POST = async (req: NextRequest) => {
+  try {
+    const body = await req.json();
+    const product = await prismaClient.product.create({
+      data: body,
+    });
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Failed to create product" },
+      { status: 500 }
+    );
+  }
+};
