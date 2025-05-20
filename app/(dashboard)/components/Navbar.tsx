@@ -15,7 +15,7 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-6">
         <ModeToggle />
        
-        <Link href="/dashboard/settings" className="hover:underline">Settings</Link>
+        {/* <Link href="/dashboard/settings" className="hover:underline">Settings</Link> */}
       </div>
     </header>
   );

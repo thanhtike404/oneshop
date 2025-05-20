@@ -3,7 +3,32 @@ import { prismaClient } from "@/lib/prismaClient";
 
 export const GET = async (req: NextRequest) => {
   try {
+    // Get query parameters from URL
+    const { searchParams } = new URL(req.url);
+    const categoryId = searchParams.get('categoryId');
+    const subcategoryId = searchParams.get('subcategoryId');
+    const name = searchParams.get('name');
+
+    // Build the where clause for filtering
+    const whereClause: any = {};
+
+    if (categoryId) {
+      whereClause.categoryId = categoryId;
+    }
+
+    if (subcategoryId) {
+      whereClause.subcategoryId = subcategoryId;
+    }
+
+    if (name) {
+      whereClause.name = {
+        contains: name,
+        mode: 'insensitive' // Case-insensitive search
+      };
+    }
+
     const products = await prismaClient.product.findMany({
+      where: whereClause, // Apply filters here
       include: {
         images: {
           select: {
@@ -25,6 +50,19 @@ export const GET = async (req: NextRequest) => {
             },
           },
         },
+        // Include category and subcategory if needed in response
+        category: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
+        subcategory: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
       },
     });
 
@@ -41,6 +79,9 @@ export const GET = async (req: NextRequest) => {
         totalStock,
         stockCount: product.stocks.length,
         stocks: product.stocks,
+        // Include category info if needed
+        category: product.category,
+        subcategory: product.subcategory
       };
     });
 
@@ -54,6 +95,7 @@ export const GET = async (req: NextRequest) => {
   }
 };
 
+// POST remains the same
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();

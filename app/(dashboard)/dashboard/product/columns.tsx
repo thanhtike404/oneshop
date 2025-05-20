@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Product } from "@/app/hooks/dashboard/useProducts"
+import { Product } from "@/types/productType"
 
 
 

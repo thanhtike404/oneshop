@@ -1,33 +1,9 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
-export type Product = {
-  id: string
-  name: string
-  images: {
-    url: string
-    altText: string
-    isPrimary: boolean
-  }[]
-  totalStock: number
-  stockCount: number
-  stocks: {
-    quantity: number
-    sku: string
-    barcode: string
-    location: string
-    variant: {
-      name: string
-    }
-  }[]
-}
+import { Product } from '@/types/productType'
 
-interface FilterOptions {
-  name?: string
-  categoryId?: string
-  subcategoryId?: string
-}
-
+import { FilterOptions } from '@/types/filterType'
 const fetchProducts = async (filters: FilterOptions = {}) => {
   const { name, categoryId, subcategoryId } = filters
   const queryParams = new URLSearchParams()
