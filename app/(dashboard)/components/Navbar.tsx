@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import SidebarToggle from './SidebarToggle';
 import { ModeToggle } from '@/components/ModeToggle';
@@ -16,6 +15,7 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-6">
         <ModeToggle />
         <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+        <Link href="/dashboard/product" className="hover:underline">Products</Link>
         <Link href="/dashboard/users" className="hover:underline">Users</Link>
         <Link href="/dashboard/settings" className="hover:underline">Settings</Link>
       </div>
