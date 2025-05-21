@@ -1,21 +1,25 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import SidebarToggle from './SidebarToggle';
+import { theme } from '@/lib/theme';
+import { cn } from '@/lib/utils';
 import { ModeToggle } from '@/components/ModeToggle';
 
 const Navbar = () => {
   return (
-    <header className="flex items-center justify-between bg-gray-100 dark:bg-black text-black dark:text-white px-4 py-3 shadow-md">
+    <header className={cn(
+      "flex items-center justify-between px-4 py-3 shadow-md",
+      theme.colors.light.background,
+      theme.colors.light.text,
+      "dark:" + theme.colors.dark.background,
+      "dark:" + theme.colors.dark.text
+    )}>
       <div className="flex items-center space-x-4">
-        <SidebarToggle />
-
+        {/* Your logo or other left-aligned content */}
       </div>
       <div className="hidden md:flex items-center space-x-6">
         <ModeToggle />
-       
-     
+        {/* Other navigation items */}
       </div>
     </header>
   );
