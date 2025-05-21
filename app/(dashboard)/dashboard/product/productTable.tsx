@@ -7,7 +7,8 @@ import { useCategories } from "@/app/hooks/useCategories"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
-
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 export function ProductsTable() {
   const { data: products, isLoading } = useProducts()
   const { data: categories } = useCategories()
@@ -33,6 +34,11 @@ export function ProductsTable() {
             onChange={(e) => setSearchFilter(e.target.value)}
             className="max-w-sm"
           />
+
+          <div className="flex items-center space-x-2">
+          <Button>
+            <Link href='/dashboard/product/create'>Create Product</Link>
+          </Button>
           <Select 
             value={categoryFilter} 
             onValueChange={setCategoryFilter}
@@ -49,6 +55,7 @@ export function ProductsTable() {
               ))}
             </SelectContent>
           </Select>
+          </div>
         </>
       }
     />

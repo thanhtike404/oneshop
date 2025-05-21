@@ -8963,6 +8963,7 @@ export namespace Prisma {
 
   export type StockMinAggregateOutputType = {
     id: string | null
+    size: string | null
     productId: string | null
     variantId: string | null
     quantity: number | null
@@ -8975,6 +8976,7 @@ export namespace Prisma {
 
   export type StockMaxAggregateOutputType = {
     id: string | null
+    size: string | null
     productId: string | null
     variantId: string | null
     quantity: number | null
@@ -8987,6 +8989,7 @@ export namespace Prisma {
 
   export type StockCountAggregateOutputType = {
     id: number
+    size: number
     productId: number
     variantId: number
     quantity: number
@@ -9009,6 +9012,7 @@ export namespace Prisma {
 
   export type StockMinAggregateInputType = {
     id?: true
+    size?: true
     productId?: true
     variantId?: true
     quantity?: true
@@ -9021,6 +9025,7 @@ export namespace Prisma {
 
   export type StockMaxAggregateInputType = {
     id?: true
+    size?: true
     productId?: true
     variantId?: true
     quantity?: true
@@ -9033,6 +9038,7 @@ export namespace Prisma {
 
   export type StockCountAggregateInputType = {
     id?: true
+    size?: true
     productId?: true
     variantId?: true
     quantity?: true
@@ -9132,6 +9138,7 @@ export namespace Prisma {
 
   export type StockGroupByOutputType = {
     id: string
+    size: string | null
     productId: string
     variantId: string
     quantity: number
@@ -9163,6 +9170,7 @@ export namespace Prisma {
 
   export type StockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    size?: boolean
     productId?: boolean
     variantId?: boolean
     quantity?: boolean
@@ -9177,6 +9185,7 @@ export namespace Prisma {
 
   export type StockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    size?: boolean
     productId?: boolean
     variantId?: boolean
     quantity?: boolean
@@ -9191,6 +9200,7 @@ export namespace Prisma {
 
   export type StockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    size?: boolean
     productId?: boolean
     variantId?: boolean
     quantity?: boolean
@@ -9205,6 +9215,7 @@ export namespace Prisma {
 
   export type StockSelectScalar = {
     id?: boolean
+    size?: boolean
     productId?: boolean
     variantId?: boolean
     quantity?: boolean
@@ -9215,7 +9226,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "variantId" | "quantity" | "barcode" | "sku" | "location" | "createdAt" | "updatedAt", ExtArgs["result"]["stock"]>
+  export type StockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "size" | "productId" | "variantId" | "quantity" | "barcode" | "sku" | "location" | "createdAt" | "updatedAt", ExtArgs["result"]["stock"]>
   export type StockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductDefaultArgs<ExtArgs>
     variant?: boolean | ProductVariantDefaultArgs<ExtArgs>
@@ -9237,6 +9248,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      size: string | null
       productId: string
       variantId: string
       quantity: number
@@ -9671,6 +9683,7 @@ export namespace Prisma {
    */
   interface StockFieldRefs {
     readonly id: FieldRef<"Stock", 'String'>
+    readonly size: FieldRef<"Stock", 'String'>
     readonly productId: FieldRef<"Stock", 'String'>
     readonly variantId: FieldRef<"Stock", 'String'>
     readonly quantity: FieldRef<"Stock", 'Int'>
@@ -13596,6 +13609,7 @@ export namespace Prisma {
 
   export const StockScalarFieldEnum: {
     id: 'id',
+    size: 'size',
     productId: 'productId',
     variantId: 'variantId',
     quantity: 'quantity',
@@ -14229,6 +14243,7 @@ export namespace Prisma {
     OR?: StockWhereInput[]
     NOT?: StockWhereInput | StockWhereInput[]
     id?: StringFilter<"Stock"> | string
+    size?: StringNullableFilter<"Stock"> | string | null
     productId?: StringFilter<"Stock"> | string
     variantId?: StringFilter<"Stock"> | string
     quantity?: IntFilter<"Stock"> | number
@@ -14243,6 +14258,7 @@ export namespace Prisma {
 
   export type StockOrderByWithRelationInput = {
     id?: SortOrder
+    size?: SortOrderInput | SortOrder
     productId?: SortOrder
     variantId?: SortOrder
     quantity?: SortOrder
@@ -14262,6 +14278,7 @@ export namespace Prisma {
     AND?: StockWhereInput | StockWhereInput[]
     OR?: StockWhereInput[]
     NOT?: StockWhereInput | StockWhereInput[]
+    size?: StringNullableFilter<"Stock"> | string | null
     productId?: StringFilter<"Stock"> | string
     variantId?: StringFilter<"Stock"> | string
     quantity?: IntFilter<"Stock"> | number
@@ -14274,6 +14291,7 @@ export namespace Prisma {
 
   export type StockOrderByWithAggregationInput = {
     id?: SortOrder
+    size?: SortOrderInput | SortOrder
     productId?: SortOrder
     variantId?: SortOrder
     quantity?: SortOrder
@@ -14294,6 +14312,7 @@ export namespace Prisma {
     OR?: StockScalarWhereWithAggregatesInput[]
     NOT?: StockScalarWhereWithAggregatesInput | StockScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Stock"> | string
+    size?: StringNullableWithAggregatesFilter<"Stock"> | string | null
     productId?: StringWithAggregatesFilter<"Stock"> | string
     variantId?: StringWithAggregatesFilter<"Stock"> | string
     quantity?: IntWithAggregatesFilter<"Stock"> | number
@@ -14998,6 +15017,7 @@ export namespace Prisma {
 
   export type StockCreateInput = {
     id?: string
+    size?: string | null
     quantity?: number
     barcode?: string | null
     sku?: string | null
@@ -15010,6 +15030,7 @@ export namespace Prisma {
 
   export type StockUncheckedCreateInput = {
     id?: string
+    size?: string | null
     productId: string
     variantId: string
     quantity?: number
@@ -15022,6 +15043,7 @@ export namespace Prisma {
 
   export type StockUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15034,6 +15056,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     productId?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -15046,6 +15069,7 @@ export namespace Prisma {
 
   export type StockCreateManyInput = {
     id?: string
+    size?: string | null
     productId: string
     variantId: string
     quantity?: number
@@ -15058,6 +15082,7 @@ export namespace Prisma {
 
   export type StockUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15068,6 +15093,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     productId?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -15746,6 +15772,7 @@ export namespace Prisma {
 
   export type StockCountOrderByAggregateInput = {
     id?: SortOrder
+    size?: SortOrder
     productId?: SortOrder
     variantId?: SortOrder
     quantity?: SortOrder
@@ -15762,6 +15789,7 @@ export namespace Prisma {
 
   export type StockMaxOrderByAggregateInput = {
     id?: SortOrder
+    size?: SortOrder
     productId?: SortOrder
     variantId?: SortOrder
     quantity?: SortOrder
@@ -15774,6 +15802,7 @@ export namespace Prisma {
 
   export type StockMinOrderByAggregateInput = {
     id?: SortOrder
+    size?: SortOrder
     productId?: SortOrder
     variantId?: SortOrder
     quantity?: SortOrder
@@ -17511,6 +17540,7 @@ export namespace Prisma {
 
   export type StockCreateWithoutProductInput = {
     id?: string
+    size?: string | null
     quantity?: number
     barcode?: string | null
     sku?: string | null
@@ -17522,6 +17552,7 @@ export namespace Prisma {
 
   export type StockUncheckedCreateWithoutProductInput = {
     id?: string
+    size?: string | null
     variantId: string
     quantity?: number
     barcode?: string | null
@@ -17740,6 +17771,7 @@ export namespace Prisma {
     OR?: StockScalarWhereInput[]
     NOT?: StockScalarWhereInput | StockScalarWhereInput[]
     id?: StringFilter<"Stock"> | string
+    size?: StringNullableFilter<"Stock"> | string | null
     productId?: StringFilter<"Stock"> | string
     variantId?: StringFilter<"Stock"> | string
     quantity?: IntFilter<"Stock"> | number
@@ -17914,6 +17946,7 @@ export namespace Prisma {
 
   export type StockCreateWithoutVariantInput = {
     id?: string
+    size?: string | null
     quantity?: number
     barcode?: string | null
     sku?: string | null
@@ -17925,6 +17958,7 @@ export namespace Prisma {
 
   export type StockUncheckedCreateWithoutVariantInput = {
     id?: string
+    size?: string | null
     productId: string
     quantity?: number
     barcode?: string | null
@@ -18973,6 +19007,7 @@ export namespace Prisma {
 
   export type StockCreateManyProductInput = {
     id?: string
+    size?: string | null
     variantId: string
     quantity?: number
     barcode?: string | null
@@ -19056,6 +19091,7 @@ export namespace Prisma {
 
   export type StockUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19067,6 +19103,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     variantId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19078,6 +19115,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     variantId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19143,6 +19181,7 @@ export namespace Prisma {
 
   export type StockCreateManyVariantInput = {
     id?: string
+    size?: string | null
     productId: string
     quantity?: number
     barcode?: string | null
@@ -19172,6 +19211,7 @@ export namespace Prisma {
 
   export type StockUpdateWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19183,6 +19223,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19194,6 +19235,7 @@ export namespace Prisma {
 
   export type StockUncheckedUpdateManyWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
+    size?: NullableStringFieldUpdateOperationsInput | string | null
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     barcode?: NullableStringFieldUpdateOperationsInput | string | null

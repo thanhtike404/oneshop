@@ -184,6 +184,7 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
 
 exports.Prisma.StockScalarFieldEnum = {
   id: 'id',
+  size: 'size',
   productId: 'productId',
   variantId: 'variantId',
   quantity: 'quantity',

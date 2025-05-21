@@ -19,7 +19,7 @@ function Sidebar() {
   return (
     <>
       {visible && (
-        <aside className="w-64 bg-gray-900 text-white p-4 space-y-6">
+        <aside className="w-64 dark:bg-black bg-gray-100  dark:text-white p-4 space-y-6 shadow-md">
           <h1 className="text-2xl font-bold">Admin</h1>
           <nav className="flex flex-col space-y-2">
             {navItems.map((item) => (

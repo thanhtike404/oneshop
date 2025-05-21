@@ -101,15 +101,116 @@ export const GET = async (req: NextRequest) => {
 };
 
 // POST endpoint for creating new products
+
+
+
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const product = await prismaClient.product.create({
-      data: body,
+    
+    // Extract the data from the request
+    const {
+      name,
+      slug,
+      description,
+      basePrice,
+      categoryId,
+      subcategoryId,
+      variants,
+      images,
+    } = body;
+
+    // Handle empty subcategoryId
+    const subcategoryIdValue = subcategoryId && subcategoryId.trim() !== "" ? subcategoryId : null;
+
+    // Process images - replace blob URLs with placeholders for now
+    // In production, you would upload these to a storage service first
+    const processedImages = images.map((image: any) => ({
+      url: image.url.replace("blob:http://localhost:3000/", "https://placeholder-image.com/"),
+      altText: image.altText || "",
+      isPrimary: image.isPrimary || false
+    }));
+
+    // Using a transaction to ensure all operations succeed or fail together
+    const product = await prismaClient.$transaction(async (tx) => {
+      // 1. Create the base product
+      const newProduct = await tx.product.create({
+        data: {
+          name,
+          slug,
+          description,
+          basePrice: parseFloat(String(basePrice)), // Ensure basePrice is a number
+          categoryId,
+          subcategoryId: subcategoryIdValue,
+        }
+      });
+      
+      // 2. Create the product variants
+      for (const variant of variants) {
+        const newVariant = await tx.productVariant.create({
+          data: {
+            name: variant.name,
+            priceOffset: parseFloat(String(variant.priceOffset)), // Ensure priceOffset is a number
+            productId: newProduct.id
+          }
+        });
+        
+        // 3. Create stocks for this variant
+        if (variant.stocks && variant.stocks.length > 0) {
+          for (const stock of variant.stocks) {
+            await tx.stock.create({
+              data: {
+                productId: newProduct.id,
+                variantId: newVariant.id,
+                quantity: parseInt(String(stock.quantity)),
+                location: stock.location || "",
+                sku: stock.sku || null,
+                barcode: stock.barcode || null
+              }
+            });
+          }
+        }
+      }
+      
+      // 4. Create product images
+      for (const image of processedImages) {
+        await tx.productImage.create({
+          data: {
+            url: image.url,
+            altText: image.altText,
+            isPrimary: image.isPrimary,
+            productId: newProduct.id
+          }
+        });
+      }
+      
+      // 5. Return the complete product
+      return tx.product.findUnique({
+        where: { id: newProduct.id },
+        include: {
+          variants: {
+            include: {
+              stocks: true
+            }
+          },
+          images: true,
+          stocks: true
+        }
+      });
     });
+
     return NextResponse.json(product);
   } catch (error) {
-    console.error(error);
+    console.error("Product creation error:", error);
+    
+    // Handle specific error types
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { message: `Failed to create product: ${error.message}` },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { message: "Failed to create product" },
       { status: 500 }

@@ -7,10 +7,10 @@ import { ModeToggle } from '@/components/ModeToggle';
 
 const Navbar = () => {
   return (
-    <header className="flex items-center justify-between bg-gray-100 dark:bg-gray-900 text-black dark:text-white px-4 py-3 shadow-md">
+    <header className="flex items-center justify-between bg-gray-100 dark:bg-black text-black dark:text-white px-4 py-3 shadow-md">
       <div className="flex items-center space-x-4">
         <SidebarToggle />
-        <span className="text-xl font-bold">Admin Panel</span>
+
       </div>
       <div className="hidden md:flex items-center space-x-6">
         <ModeToggle />
