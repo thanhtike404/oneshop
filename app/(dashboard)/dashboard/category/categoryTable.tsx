@@ -25,8 +25,8 @@ import { useState } from "react";
 export default function CategoryTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const { data: categories, isLoading, error } = useCategories();
-
+  const { categories, isLoading, error, getCategories } = useCategories();
+  console.log(categories,'category table');
   const table = useReactTable({
     data: categories || [],
     columns,

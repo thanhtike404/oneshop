@@ -4,8 +4,6 @@ import CategoryTable from "./categoryTable";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FiBox, FiGrid } from "react-icons/fi";
 
-const queryClient = new QueryClient();
-
 export default function CategoriesPage() {
   return (
  
