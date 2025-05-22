@@ -9,10 +9,9 @@ const Navbar = () => {
   return (
     <header className={cn(
       "flex items-center justify-between px-4 py-3 shadow-md",
-      theme.colors.light.background,
-      theme.colors.light.text,
-      "dark:" + theme.colors.dark.background,
-      "dark:" + theme.colors.dark.text
+      "bg-background",
+      "text-foreground",
+      "border-b border-border"
     )}>
       <div className="flex items-center space-x-4">
         {/* Your logo or other left-aligned content */}

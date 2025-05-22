@@ -247,7 +247,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/thz/Desktop/Next/oneshop/prisma/generated",
+      "value": "C:\\Users\\thanh\\Desktop\\oneshop\\prisma\\generated",
       "fromEnvVar": null
     },
     "config": {
@@ -256,12 +256,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "rhel-openssl-3.0.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/thz/Desktop/Next/oneshop/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\thanh\\Desktop\\oneshop\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -275,6 +275,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
