@@ -1,4 +1,4 @@
-import { prismaClient as prisma } from "@/lib/prismaClient"
+import {  prismaClient } from "@/lib/prismaClient"
 import { NextResponse } from "next/server"
 
 export async function GET(
@@ -6,49 +6,35 @@ export async function GET(
   { params }: { params: { productId: string } }
 ) {
   try {
-    const product = await prisma.product.findUnique({
-      where: { id: params.productId },
+    const { productId } = await params;
+    
+    const product = await prismaClient.product.findUnique({
+      where: {
+        id: productId,
+      },
       include: {
-        images: true,
         category: {
           select: {
             id: true,
             name: true,
-            slug: true,
-            description: true
-          },
-        },
-        subcategory: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            description: true
           },
         },
         variants: {
           include: {
-            stocks: true
-          }
-        },
-        stocks: {
-          include: {
-            variant: true
+            stocks: true,
           },
         },
+        images: true,
       },
-    })
+    });
 
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 })
+      return new NextResponse('Product not found', { status: 404 });
     }
 
-    return NextResponse.json(product)
+    return NextResponse.json(product);
   } catch (error) {
-    console.error("Error fetching product:", error)
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    )
+    console.error('[PRODUCT_GET]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }

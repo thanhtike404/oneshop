@@ -16,6 +16,7 @@ export type Product = {
     sku: string
     barcode: string
     location: string
+    size: string  // Add this
     variant: {
       name: string
     }

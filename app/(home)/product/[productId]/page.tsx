@@ -11,12 +11,31 @@ export default function ProductDetailPage() {
   const { productId } = useParams()
   const { data: product, isLoading } = useProduct(productId as string)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const [selectedVariant, setSelectedVariant] = useState<any>(null)
 
   if (isLoading || !product) {
     return <div className="container mx-auto p-6">Loading...</div>
   }
 
   const images = product.images || []
+  
+  // Get unique sizes from stocks
+  const sizes = Array.from(new Set(product.stocks?.map(stock => stock.size))).filter(Boolean)
+  
+  // Calculate price based on selected variant
+  const currentPrice = selectedVariant
+    ? product.basePrice + selectedVariant.priceOffset
+    : product.basePrice
+
+  // Handle size selection
+  const handleSizeSelect = (size: string) => {
+    setSelectedSize(size)
+    const variant = product.variants?.find(v => 
+      v.stocks.some(s => s.size === size)
+    )
+    setSelectedVariant(variant)
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -81,22 +100,31 @@ export default function ProductDetailPage() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">SKU: {product.stocks?.[0]?.sku}</p>
-              <p className="text-2xl font-bold mt-1">K{product.basePrice}</p>
+              <p className="text-sm text-muted-foreground">SKU: {selectedVariant?.stocks[0]?.sku || product.stocks?.[0]?.sku}</p>
+              <p className="text-2xl font-bold mt-1">K{currentPrice}</p>
             </div>
 
             {/* Stock Status */}
-            {product.totalStock > 0 && product.totalStock <= 5 && (
+            {selectedVariant && selectedVariant.stocks[0]?.quantity <= 5 && (
               <div className="text-primary text-sm border border-primary rounded-md p-2">
-                Hurry! Only {product.totalStock} left in stock.
+                Hurry! Only {selectedVariant.stocks[0].quantity} left in stock.
               </div>
             )}
 
             {/* Size Selection */}
             <div className="space-y-2">
-              <p className="font-medium">SIZE: SMALL</p>
-              <div className="flex gap-2">
-                <Button variant="outline" className="h-10 px-6">Small</Button>
+              <p className="font-medium">SIZE: {selectedSize || 'Select Size'}</p>
+              <div className="flex gap-2 flex-wrap">
+                {sizes.map((size) => (
+                  <Button
+                    key={size}
+                    variant={selectedSize === size ? "default" : "outline"}
+                    className="h-10 px-6"
+                    onClick={() => handleSizeSelect(size)}
+                  >
+                    {size}
+                  </Button>
+                ))}
               </div>
             </div>
 
