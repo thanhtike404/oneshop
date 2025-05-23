@@ -7,6 +7,124 @@ import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useState } from "react"
 
+// Skeleton Components
+const Skeleton = ({ className }: { className?: string }) => (
+  <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
+)
+
+const ProductLoadingSkeleton = () => (
+  <div className="container mx-auto p-6">
+    <div className="flex flex-col gap-4">
+      {/* Breadcrumb Skeleton */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-4 w-12" />
+        <span className="text-gray-300">></span>
+        <Skeleton className="h-4 w-20" />
+        <span className="text-gray-300">></span>
+        <Skeleton className="h-4 w-32" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Left Column - Image Skeletons */}
+        <div className="space-y-4">
+          {/* Main Image Skeleton */}
+          <div className="relative aspect-square overflow-hidden rounded-lg">
+            <Skeleton className="w-full h-full" />
+            {/* Shimmer effect overlay */}
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          </div>
+
+          {/* Thumbnail gallery skeleton */}
+          <div className="grid grid-cols-5 gap-2">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className="relative aspect-square overflow-hidden rounded-md">
+                <Skeleton className="w-full h-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column - Product Info Skeleton */}
+        <div className="space-y-6">
+          {/* Title and Rating */}
+          <div className="space-y-3">
+            <Skeleton className="h-8 w-3/4" />
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} className="h-4 w-4 rounded-full" />
+                ))}
+              </div>
+              <Skeleton className="h-4 w-20" />
+            </div>
+          </div>
+
+          {/* SKU and Price */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-8 w-20" />
+          </div>
+
+          {/* Stock Warning Placeholder */}
+          <div className="border border-gray-200 rounded-md p-2">
+            <Skeleton className="h-4 w-48" />
+          </div>
+
+          {/* Size Selection */}
+          <div className="space-y-3">
+            <Skeleton className="h-5 w-32" />
+            <div className="flex gap-2 flex-wrap">
+              {[...Array(4)].map((_, index) => (
+                <Skeleton key={index} className="h-10 w-12 rounded-md" />
+              ))}
+            </div>
+          </div>
+
+          {/* Color Selection */}
+          <div className="space-y-3">
+            <Skeleton className="h-5 w-40" />
+            <div className="flex gap-2">
+              <Skeleton className="h-10 w-10 rounded-md" />
+              <Skeleton className="h-10 w-10 rounded-md" />
+            </div>
+          </div>
+
+          {/* Material Selection */}
+          <div className="space-y-3">
+            <Skeleton className="h-5 w-28" />
+            <Skeleton className="h-10 w-16 rounded-md" />
+          </div>
+
+          {/* Quantity and Add to Cart */}
+          <div className="flex gap-4 items-center">
+            <Skeleton className="h-10 w-32 rounded-md" />
+            <Skeleton className="h-10 flex-1 rounded-md" />
+          </div>
+
+          {/* Customer Service Button */}
+          <Skeleton className="h-10 w-full rounded-md" />
+        </div>
+      </div>
+    </div>
+
+    {/* Loading indicator */}
+    <div className="fixed bottom-6 right-6 bg-white shadow-lg rounded-full p-3 border">
+      <div className="flex items-center gap-3">
+        <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <span className="text-sm font-medium text-gray-600">Loading product...</span>
+      </div>
+    </div>
+
+    <style jsx>{`
+      @keyframes shimmer {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+    `}</style>
+  </div>
+)
+
 export default function ProductDetailPage() {
   const { productId } = useParams()
   const { data: product, isLoading } = useProduct(productId as string)
@@ -15,23 +133,19 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState<any>(null)
 
   if (isLoading || !product) {
-    return <div className="container mx-auto p-6">Loading...</div>
+    return <ProductLoadingSkeleton />
   }
 
   const images = product.images || []
-  
-  // Get unique sizes from stocks
   const sizes = Array.from(new Set(product.stocks?.map(stock => stock.size))).filter(Boolean)
-  
-  // Calculate price based on selected variant
+
   const currentPrice = selectedVariant
     ? product.basePrice + selectedVariant.priceOffset
     : product.basePrice
 
-  // Handle size selection
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size)
-    const variant = product.variants?.find(v => 
+    const variant = product.variants?.find(v =>
       v.stocks.some(s => s.size === size)
     )
     setSelectedVariant(variant)
@@ -51,7 +165,6 @@ export default function ProductDetailPage() {
           {/* Left Column - Images */}
           <div className="space-y-4">
             {/* Main Image */}
-            // Main image display
             <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
               {images[selectedImage] && (
                 <Image
@@ -63,8 +176,8 @@ export default function ProductDetailPage() {
                 />
               )}
             </div>
-            
-            // Thumbnail gallery
+
+            {/* Thumbnail gallery */}
             <div className="grid grid-cols-5 gap-2">
               {images.map((image, index) => (
                 <button
@@ -104,14 +217,12 @@ export default function ProductDetailPage() {
               <p className="text-2xl font-bold mt-1">K{currentPrice}</p>
             </div>
 
-            {/* Stock Status */}
             {selectedVariant && selectedVariant.stocks[0]?.quantity <= 5 && (
               <div className="text-primary text-sm border border-primary rounded-md p-2">
                 Hurry! Only {selectedVariant.stocks[0].quantity} left in stock.
               </div>
             )}
 
-            {/* Size Selection */}
             <div className="space-y-2">
               <p className="font-medium">SIZE: {selectedSize || 'Select Size'}</p>
               <div className="flex gap-2 flex-wrap">
@@ -128,7 +239,6 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Color Selection */}
             <div className="space-y-2">
               <p className="font-medium">COLOR: SLATE BLUE</p>
               <div className="flex gap-2">
@@ -140,13 +250,11 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Material */}
             <div className="space-y-2">
               <p className="font-medium">MATERIAL: PU</p>
               <Button variant="outline" className="h-10 px-6">PU</Button>
             </div>
 
-            {/* Quantity and Add to Cart */}
             <div className="flex gap-4 items-center">
               <div className="flex items-center border rounded-md">
                 <Button variant="ghost" className="h-10 px-3">-</Button>
@@ -161,7 +269,6 @@ export default function ProductDetailPage() {
               <Button className="flex-1" size="lg">Add to Cart</Button>
             </div>
 
-            {/* Customer Service */}
             <Button variant="outline" className="w-full" size="lg">
               Customer Service
             </Button>
