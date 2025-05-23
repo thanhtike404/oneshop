@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export interface Category {
   id: string
@@ -34,11 +34,36 @@ const fetchCategories = async (): Promise<Category[]> => {
   return response.data
 }
 
+interface CreateSubcategoryDTO {
+  categoryId: string
+  name: string
+  slug: string
+  description?: string
+  iconUrl?: string
+}
+
+const createSubcategory = async (data: CreateSubcategoryDTO) => {
+  const response = await axios.post('/api/v1/subcategories', data)
+  return response.data
+}
+
 export const useCategories = () => {
-  return useQuery<Category[]>({
+  const query = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: fetchCategories,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: false
   })
+
+  const mutation = useMutation<void, Error, CreateSubcategoryDTO>({
+    mutationFn: createSubcategory,
+    onSuccess: () => {
+      query.refetch()
+    }
+  })
+
+  return {
+    ...query,
+    createSubcategory: mutation
+  }
 }

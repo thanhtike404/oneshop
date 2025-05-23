@@ -98,6 +98,14 @@ export default async function Home() {
                         <path d="M10 17.25L8.55 15.9C4.4 12.1 1.75 9.7 1.75 6.75C1.75 4.35 3.65 2.45 6.05 2.45C7.35 2.45 8.6 3.05 9.5 4C10.4 3.05 11.65 2.45 12.95 2.45C15.35 2.45 17.25 4.35 17.25 6.75C17.25 9.7 14.6 12.1 10.45 15.9L10 17.25Z" fill="white"/>
                       </svg>
                     </button>
+                    // In your product card component, add a button:
+<a
+
+  href={`/product/${product.id}`}
+  className="text-sm font-medium border-b border-amber-400 pb-1 hover:text-amber-400 transition duration-300"
+>
+  View Details
+</a>
                   </div>
                 </div>
                 <div className="p-5">
