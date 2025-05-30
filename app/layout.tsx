@@ -40,7 +40,17 @@ export default function RootLayout({
           <ReactQueryProvider>
 
             {children}
-            <Toaster/>
+            <Toaster
+  toastOptions={{
+    unstyled: true,
+    classNames: {
+      error: 'bg-red-400',
+      success: 'text-green-400',
+      warning: 'text-yellow-400',
+      info: 'bg-blue-400',
+    },
+  }}
+/>
           {/* <Toaster/> */}
           </ReactQueryProvider>
 

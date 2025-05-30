@@ -64,26 +64,28 @@ function Sidebar() {
           </div>
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex items-center gap-3 p-3 rounded-lg transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  pathname.startsWith(item.href) && 
-                  'bg-primary/10 text-primary',
-                  isCollapsed && 'justify-center'
-                )}
-              >
-                <span className={cn(isCollapsed ? "mx-auto" : "")}>
-                  {item.icon}
-                </span>
-                {!isCollapsed && (
-                  <span className="text-sm font-medium">{item.name}</span>
-                )}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || 
+                              (item.href !== '/dashboard' && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'flex items-center gap-3 p-3 rounded-lg transition-colors',
+                    'hover:bg-accent hover:text-accent-foreground',
+                    isActive ? 'bg-accent text-accent-foreground font-medium' : ''
+                  )}
+                >
+                  <span className={cn(isCollapsed ? "mx-auto" : "")}>
+                    {item.icon}
+                  </span>
+                  {!isCollapsed && (
+                    <span className="text-sm font-medium">{item.name}</span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {!isCollapsed && (

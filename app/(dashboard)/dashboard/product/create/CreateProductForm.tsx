@@ -17,7 +17,7 @@ import ProductVariants from './ProductVariants'
 import { useSlugGeneration } from '@/app/hooks/useSlugGeneration'
 import { useProductImages } from '@/app/hooks/useProductImages' // Correct path
 import { useProductVariants } from '@/app/hooks/useProductVariants' // Correct path
-import { useCreateProduct } from '@/app/hooks/useCreateProduct' // Correct path
+import { useCreateProduct } from '@/app/hooks/dashboard/useProducts'
 import { toast } from 'sonner'
 import { useState } from 'react'
 
