@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 
 import { columns } from "./columns";
-import { useProducts } from "@/app/hooks/dashboard/useProducts";
+import { useDeleteProduct, useProducts,useDeleteManyProducts } from "@/app/hooks/dashboard/useProducts";
 import { useCategories } from "@/app/hooks/useCategories";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,10 +10,12 @@ import Link from "next/link";
 import { useState } from "react";
 
 
+
 import { DataTable } from "@/app/(dashboard)/components/data-table"
 
 export function ProductsTable() {
   const { data: products, isLoading } = useProducts()
+ const { mutateAsync }=useDeleteManyProducts()
   const { data: categories } = useCategories()
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [searchFilter, setSearchFilter] = useState("")
@@ -30,6 +32,7 @@ export function ProductsTable() {
       // @ts-ignore
       data={filteredData}
       isLoading={isLoading}
+      deleteSelectedIds={mutateAsync}
       filters={
         <>
           <Input

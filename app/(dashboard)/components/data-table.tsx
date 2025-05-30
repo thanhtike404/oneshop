@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   isLoading?: boolean;
   filters?: React.ReactNode;
+  deleteSelectedIds?: (ids: string [] ) => any;
 }
 
 export function DataTable<TData extends { id: string | number }, TValue>({ // <--- TData must extend an object with an 'id'
@@ -36,6 +37,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({ // <-
   data,
   isLoading = false,
   filters,
+  deleteSelectedIds
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -43,6 +45,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({ // <-
     pageIndex: 0,
     pageSize: 10,
   });
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const table = useReactTable({
@@ -68,7 +71,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({ // <-
   });
 
   // Function to handle multiple deletion
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected =async () => {
     // Get the array of selected row objects
     const selectedRows = table.getSelectedRowModel().rows;
 
@@ -77,26 +80,13 @@ export function DataTable<TData extends { id: string | number }, TValue>({ // <-
 
     console.log("Product IDs to delete:", selectedProductIds);
 
-    // --- Here's where you would make your API call to delete products ---
-    // Example:
-    // try {
-    //   const response = await fetch('/api/products/delete-multiple', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ ids: selectedProductIds }),
-    //   });
-    //   if (response.ok) {
-    //     console.log('Selected products deleted successfully!');
-    //     // Optionally clear selection after deletion
-    //     table.toggleAllRowsSelected(false);
-    //     // You might also need to re-fetch your data here
-    //   } else {
-    //     console.error('Failed to delete products:', response.statusText);
-    //   }
-    // } catch (error) {
-    //   console.error('Error deleting products:', error);
-    // }
-    // -------------------------------------------------------------------
+    // Call the deleteSelectedIds function with the selectedProductIds
+    if (deleteSelectedIds) {
+      await deleteSelectedIds(selectedProductIds as string[]);
+   
+    }
+
+
   };
 
   return (

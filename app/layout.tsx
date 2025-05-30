@@ -40,6 +40,7 @@ export default function RootLayout({
           <ReactQueryProvider>
 
             {children}
+            <Toaster/>
           {/* <Toaster/> */}
           </ReactQueryProvider>
 

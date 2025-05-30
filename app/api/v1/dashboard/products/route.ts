@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/lib/prismaClient";
 import { uploadTOCloudinary } from "@/lib/cloudinary";
-import axios from "axios";
+
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -101,9 +101,6 @@ export const GET = async (req: NextRequest) => {
     );
   }
 };
-
-// POST endpoint for creating new products
-
 
 
 export const POST = async (req: NextRequest) => {
@@ -253,3 +250,24 @@ export const POST = async (req: NextRequest) => {
     );
   }
 };
+
+export const DELETE = async (req: NextRequest) => {
+    const { productIds } = await req.json();
+    try {
+        const deletedProduct = await prismaClient.product.deleteMany({
+            where: {
+                id: {
+                    in: productIds
+                }
+            }
+        });
+        return NextResponse.json(deletedProduct);
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json(
+            { message: "Failed to delete product" },
+            { status: 500 }
+        );
+    }
+
+}

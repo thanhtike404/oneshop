@@ -38,3 +38,28 @@ export async function GET(
     return new NextResponse('Internal error', { status: 500 });
   }
 }
+
+
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+    const { productIds } = body;
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return new NextResponse('No product IDs provided', { status: 400 });
+    }
+
+    const deleted = await prismaClient.product.deleteMany({
+      where: {
+        id: {
+          in: productIds,
+        },
+      },
+    });
+
+    return NextResponse.json({ count: deleted.count });
+  } catch (error) {
+    console.error('[PRODUCTS_DELETE_MANY]', error);
+    return new NextResponse('Internal error', { status: 500 });
+  }
+}
