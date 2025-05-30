@@ -4,12 +4,36 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Eye } from "lucide-react";
 import Link from "next/link";
+import { Product } from "@/prisma/generated";
 import ProductImageCell from "../../components/ProductImageCell";
-
+import { Checkbox } from "@/components/ui/checkbox";
 export const columns: ColumnDef<Product>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     id: "image",
     header: "Image",
+    // @ts-ignore
     cell: ({ row }) => <ProductImageCell product={row.original} />,
   },
   {

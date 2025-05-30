@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'placeholder-image.com',
         pathname: '/**',
       },
+        {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
     ],
   },
    typescript: {

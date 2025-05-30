@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/lib/prismaClient";
+import { uploadTOCloudinary } from "@/lib/cloudinary";
+import axios from "axios";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -106,85 +108,126 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const body = await req.json();
+    const formData = await req.formData();
     
-    // Extract the data from the request
-    const {
-      name,
-      slug,
-      description,
-      basePrice,
-      categoryId,
-      subcategoryId,
-      variants,
-      images,
-    } = body;
+    // Debug logging
+    console.log('Received FormData entries:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value instanceof File ? 'File: ' + value.name : value}`);
+    }
 
-    // Handle empty subcategoryId
-    const subcategoryIdValue = subcategoryId && subcategoryId.trim() !== "" ? subcategoryId : null;
+    // 1. Extract basic product data
+    const name = formData.get('name') as string;
+    const slug = formData.get('slug') as string;
+    const description = formData.get('description') as string;
+    const basePrice = parseFloat(formData.get('basePrice') as string);
+    const categoryId = formData.get('categoryId') as string;
+    const subcategoryId = formData.get('subcategoryId') as string;
+    
+    // 2. Parse variants data with validation
+    const variantsDataString = formData.get('variantsData');
+    console.log('Variants data string:', variantsDataString);
 
-    // Process images - replace blob URLs with placeholders for now
-    // In production, you would upload these to a storage service first
-    const processedImages = images.map((image: any) => ({
-      url: image.url.replace("blob:http://localhost:3000/", "https://placeholder-image.com/"),
-      altText: image.altText || "",
-      isPrimary: image.isPrimary || false
-    }));
+    let variantsData = [];
+    try {
+      if (variantsDataString && typeof variantsDataString === 'string') {
+        variantsData = JSON.parse(variantsDataString);
+        if (!Array.isArray(variantsData)) {
+          throw new Error('Variants data is not an array');
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing variants data:', error);
+      throw new Error('Invalid variants data format');
+    }
 
-    // Using a transaction to ensure all operations succeed or fail together
+    console.log('Parsed variants data:', variantsData);
+
+    // 3. Handle image files
+    const imageFiles = formData.getAll('imageFiles') as File[];
+    const imageMetadataString = formData.get('imageMetadata') as string;
+    const imageMetadata = imageMetadataString ? JSON.parse(imageMetadataString) : [];
+
+    // Upload images to Cloudinary
+    const uploadPromises = imageFiles.map(async (file, index) => {
+      try {
+        const uploadedUrl = await uploadTOCloudinary(file,'product');
+        
+        if (!uploadedUrl) {
+          throw new Error('Failed to upload image to Cloudinary');
+        }
+
+        return {
+          url: uploadedUrl,
+          altText: imageMetadata[index]?.altText || '',
+          isPrimary: imageMetadata[index]?.isPrimary || false
+        };
+      } catch (error) {
+        console.error(`Error uploading image ${index}:`, error);
+        throw error;
+      }
+    });
+
+    const uploadedImages = await Promise.all(uploadPromises);
+    console.log('Uploaded images:', uploadedImages);
+
+    // 4. Create product with all related data in a transaction
     const product = await prismaClient.$transaction(async (tx) => {
-      // 1. Create the base product
+      // Create base product
       const newProduct = await tx.product.create({
         data: {
           name,
           slug,
           description,
-          basePrice: parseFloat(String(basePrice)), // Ensure basePrice is a number
+          basePrice,
           categoryId,
-          subcategoryId: subcategoryIdValue,
+          subcategoryId: subcategoryId || null,
         }
       });
-      
-      // 2. Create the product variants
-      for (const variant of variants) {
-        const newVariant = await tx.productVariant.create({
-          data: {
-            name: variant.name,
-            priceOffset: parseFloat(String(variant.priceOffset)), // Ensure priceOffset is a number
-            productId: newProduct.id
-          }
-        });
-        
-        // 3. Create stocks for this variant
-        if (variant.stocks && variant.stocks.length > 0) {
-          for (const stock of variant.stocks) {
-            await tx.stock.create({
-              data: {
-                productId: newProduct.id,
-                variantId: newVariant.id,
-                quantity: parseInt(String(stock.quantity)),
-                location: stock.location || "",
-                sku: stock.sku || null,
-                barcode: stock.barcode || null
-              }
-            });
+
+      // Create variants and their stocks
+      if (Array.isArray(variantsData) && variantsData.length > 0) {
+        for (const variantData of variantsData) {
+          const variant = await tx.productVariant.create({
+            data: {
+              name: variantData.name,
+              priceOffset: parseFloat(String(variantData.priceOffset || 0)),
+              productId: newProduct.id,
+            }
+          });
+
+          // Create stocks for this variant
+          if (Array.isArray(variantData.stocks)) {
+            await Promise.all(variantData.stocks.map((stockData: any) =>
+              tx.stock.create({
+                data: {
+                  productId: newProduct.id,
+                  variantId: variant.id,
+                  quantity: parseInt(String(stockData.quantity || 0)),
+                  location: stockData.location || '',
+                  sku: stockData.sku || null,
+                  barcode: stockData.barcode || null
+                }
+              })
+            ));
           }
         }
       }
-      
-      // 4. Create product images
-      for (const image of processedImages) {
-        await tx.productImage.create({
-          data: {
-            url: image.url,
-            altText: image.altText,
-            isPrimary: image.isPrimary,
-            productId: newProduct.id
-          }
-        });
+
+      // Create product images
+      if (uploadedImages.length > 0) {
+        await Promise.all(uploadedImages.map((image) =>
+          tx.productImage.create({
+            data: {
+              url: image.url,
+              altText: image.altText,
+              isPrimary: image.isPrimary,
+              productId: newProduct.id
+            }
+          })
+        ));
       }
-      
-      // 5. Return the complete product
+
       return tx.product.findUnique({
         where: { id: newProduct.id },
         include: {
@@ -193,8 +236,7 @@ export const POST = async (req: NextRequest) => {
               stocks: true
             }
           },
-          images: true,
-          stocks: true
+          images: true
         }
       });
     });
@@ -202,17 +244,11 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(product);
   } catch (error) {
     console.error("Product creation error:", error);
-    
-    // Handle specific error types
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { message: `Failed to create product: ${error.message}` },
-        { status: 500 }
-      );
-    }
-    
     return NextResponse.json(
-      { message: "Failed to create product" },
+      { 
+        message: error instanceof Error ? error.message : "Failed to create product",
+        details: error instanceof Error ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
