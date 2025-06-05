@@ -225,6 +225,13 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SlidersScalarFieldEnum = {
+  id: 'id',
+  isActive: 'isActive',
+  title: 'title',
+  image: 'image'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -263,7 +270,8 @@ exports.Prisma.ModelName = {
   Stock: 'Stock',
   CartItem: 'CartItem',
   Order: 'Order',
-  OrderItem: 'OrderItem'
+  OrderItem: 'OrderItem',
+  Sliders: 'Sliders'
 };
 
 /**

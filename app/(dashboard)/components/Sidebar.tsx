@@ -12,7 +12,7 @@ const navItems = [
   { name: 'Categories', href: '/dashboard/category', icon: <FiTag className="w-5 h-5" /> },
   { name: 'Customers', href: '/dashboard/customers', icon: <FiUsers className="w-5 h-5" /> },
   { name: 'Analytics', href: '/dashboard/analytics', icon: <FiPieChart className="w-5 h-5" /> },
-  { name: 'Settings', href: '/dashboard/settings', icon: <FiSettings className="w-5 h-5" /> },
+  { name: 'Settings', href: '/dashboard/settings/sliders', icon: <FiSettings className="w-5 h-5" /> },
 ];
 
 function Sidebar() {

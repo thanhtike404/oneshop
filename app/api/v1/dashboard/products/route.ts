@@ -80,6 +80,7 @@ export const GET = async (req: NextRequest) => {
         id: product.id,
         name: product.name,
         slug: product.slug,
+        isFeatured:product.isFeatured,
         description: product.description,
         basePrice: product.basePrice,
         images: product.images,

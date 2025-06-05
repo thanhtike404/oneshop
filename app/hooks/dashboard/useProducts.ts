@@ -23,6 +23,7 @@ const fetchProducts = async (filters: FilterOptions = {}) => {
 
   const url = `/api/v1/dashboard/products?${queryParams.toString()}`
   const res = await axios.get(url)
+ 
   return res.data as Product[]
 }
 

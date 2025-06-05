@@ -142,6 +142,13 @@ model OrderItem {
   variant   ProductVariant @relation(fields: [variantId], references: [id])
 }
 
+model Sliders {
+  id       String  @id @default(uuid())
+  isActive Boolean @default(true)
+  title    String
+  image    String
+}
+
 enum Role {
   CUSTOMER
   ADMIN

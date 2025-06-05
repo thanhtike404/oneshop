@@ -5,7 +5,7 @@
   "scripts": {
     "seed": "ts-node prisma/seed.ts",
     "prisma:generate": "prisma generate",
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack --hostname 0.0.0.0",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
@@ -22,7 +22,8 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.2",
     "@radix-ui/react-tabs": "^1.1.12",
-    "@tanstack/react-query": "^5.76.1",
+    "@tanstack/react-query": "^5.80.5",
+    "@tanstack/react-query-devtools": "^5.80.5",
     "@tanstack/react-table": "^8.21.3",
     "@types/fslightbox-react": "^1.8.0",
     "axios": "^1.9.0",
