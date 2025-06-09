@@ -23,7 +23,7 @@ export const uploadTOCloudinary = async (file: File, folderName?: string) => {
     
     const cloudinaryResult = await new Promise<any>((resolve, reject) => {
         const uploadOptions: UploadApiOptions = {
-            resource_type: 'image', // Now properly typed as the literal "image"
+            resource_type: 'image',
             folder: folderName ? `ecommerce/${folderName}` : 'ecommerce'
         };
 
