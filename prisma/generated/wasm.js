@@ -232,6 +232,16 @@ exports.Prisma.SlidersScalarFieldEnum = {
   image: 'image'
 };
 
+exports.Prisma.PushTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -271,7 +281,8 @@ exports.Prisma.ModelName = {
   CartItem: 'CartItem',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  Sliders: 'Sliders'
+  Sliders: 'Sliders',
+  PushToken: 'PushToken'
 };
 
 /**
