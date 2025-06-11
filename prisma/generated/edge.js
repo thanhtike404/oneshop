@@ -267,7 +267,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/zcoder/Desktop/nextJs/oneshop/prisma/generated",
+      "value": "/home/thz/Desktop/nextjs/oneshop/prisma/generated",
       "fromEnvVar": null
     },
     "config": {
@@ -276,7 +276,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "rhel-openssl-3.0.x",
         "native": true
       },
       {
@@ -289,7 +289,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/zcoder/Desktop/nextJs/oneshop/prisma/schema.prisma",
+    "sourceFilePath": "/home/thz/Desktop/nextjs/oneshop/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
